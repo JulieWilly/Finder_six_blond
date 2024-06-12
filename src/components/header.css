@@ -1,0 +1,36 @@
+:root{
+    --primary-color: #070f2b;
+    --secondery-color: #ccd2da;
+}
+
+.headerSect {
+    padding: .5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--primary-color);
+}
+
+.headerSect p span {
+    text-decoration: underline;
+}
+.headerSect p{
+    color: var(--secondery-color);
+    font-size: 1.2rem;
+}
+
+.headerSect .title  h1{
+    font-size: 2rem;
+    color: var(--secondery-color);
+}
+
+.headerSect .searchInput input {
+    height: 2rem;
+    padding-inline-start: .5rem;
+    color: black;   
+}
+.headerSect .searchInput button {
+    height: 2rem;
+    padding: 0 1rem;
+}
