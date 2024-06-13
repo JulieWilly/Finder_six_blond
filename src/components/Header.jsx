@@ -8,7 +8,7 @@ const HeaderSect = () => {
             <h1>GITHUB FINDER</h1>
           </div>
           <p>
-            By<span> Dennis Otwoma </span>
+            By<span> Wilfred Muchire </span>
           </p>
 
           <div className="searchInput">
