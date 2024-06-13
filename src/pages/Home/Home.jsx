@@ -6,6 +6,7 @@ import { FaCodeFork } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import userImg from '../../assets/mombasainit.jpg'
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 const Network = ({followerImg, followerName}) => {
   return (
@@ -112,6 +113,22 @@ const UserDetails = ({
   );
 };
 const Home = () => {
+  const[userDetails, setUserDetails] = useState();
+
+  const fetchData = async () => {
+
+    const responseData = await fetch("https://api.github.com/users/JulieWilly");
+    const feedbackData = responseData.json();
+
+    // console.log('Hello World')
+    console.log(feedbackData)
+    setUserDetails(feedbackData)
+  }
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
   return (
     <>
       <div className="homeSect">
