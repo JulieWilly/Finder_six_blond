@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const getUserData = create((set) => ({
-  userGitName: "kimtechnos",
+  userGitName: "github",
   userGitData: {},
   // set the name and the data
   setUserGitName: (userGitName) => set({ userGitName }),

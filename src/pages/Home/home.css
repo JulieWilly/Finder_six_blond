@@ -14,19 +14,20 @@
 .user_section {
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  width: 17rem;
 }
 .userImg {
   width: 100%;
   height: 17rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
+border-radius: 1rem;
+    overflow: hidden;
+    /* border: 12px solid red; */
 }
 .userImg img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit:contain;
+  object-fit:cover;
 }
 
 .user_section .userDesc {
@@ -36,6 +37,9 @@
 
 .userDesc h1 {
   font-size: 1.7rem;
+}
+.user_section .userDesc a{
+    text-decoration: none;
 }
 
 .userDesc p {
@@ -86,7 +90,10 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
-
+ a{
+    text-decoration:none;
+    color: black;
+}
 .card {
   width: 27rem;
   border-radius: 0.5rem;
@@ -133,8 +140,7 @@
   margin-top: 0.5rem;
   width: 5rem;
   height: 5rem;
-border-radius: 1rem;
-overflow: hidden;
+
 }
 .followerImg img {
   width: 100%;

@@ -35,28 +35,30 @@ const Title = ({ title, number }) => {
   );
 };
 
-const UserDetailsSect = ({ cardTitle, cardDesc, forks, stars }) => {
+const UserDetailsSect = ({ cardTitle, cardDesc, forks, stars, repoLink }) => {
   return (
     <>
       {/* <Title title={"Repositories"} number={0} /> */}
       <div className="reposSect">
-        <div className="card">
-          <div className="cardTop">
-            <h2>{cardTitle}</h2>
-            <p>{cardDesc}</p>
-          </div>
-          <div className="cardBottom">
-            <div className="items">
-              <p>
-                {<FaCodeFork />} {forks} Forks
-              </p>
-              <p>
-                {<FaStar />}
-                {stars} Stars
-              </p>
+        <a href={repoLink} target="_blank">
+          <div className="card">
+            <div className="cardTop">
+              <h2>{cardTitle}</h2>
+              <p>{cardDesc}</p>
+            </div>
+            <div className="cardBottom">
+              <div className="items">
+                <p>
+                  {<FaCodeFork />} {forks} Forks
+                </p>
+                <p>
+                  {<FaStar />}
+                  {stars} Stars
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       {/* <Title title={"Followers"} number={0} />
@@ -80,6 +82,7 @@ const UserDetails = ({
   userRepos,
   userFollowers,
   userFollows,
+  link,
 }) => {
   return (
     <section className="home_sect">
@@ -91,7 +94,9 @@ const UserDetails = ({
           <h1> {userName}</h1>
           <p>{userShortName}</p>
           <p>{userDescription}</p>
-          <button> {<FaExternalLinkAlt />}View on github</button>
+          <a href={link} target="_blank">
+            <button>{<FaExternalLinkAlt />}View on github</button>
+          </a>
           <div className="userNetwork">
             <p>
               {<RiGitRepositoryFill className="icons" />}
@@ -129,17 +134,12 @@ const Home = () => {
     const getUserDetails = async () => {
       if (userName) {
         try {
-          //  const fetchUserData = await fetch(
-          //    `https://api.github.com/users/${userName}`
-          //  );
-          //  const userDataResult = await fetchUserData.json();
-          //  setUserData(userDataResult);
-
           const userRepos = await fetch(
             `https://api.github.com/users/${userName}/repos`
           );
           const resultRepos = await userRepos.json();
           setUserRepos(resultRepos);
+          console.log(resultRepos);
 
           const userFollowers = await fetch(
             `https://api.github.com/users/${userName}/followers`
@@ -160,10 +160,6 @@ const Home = () => {
     getUserDetails();
   }, [userName]);
 
-  // if (!userGitData) {
-  //   return <div>No user data available</div>;
-  // }
-
   return (
     <>
       <div className="homeSect">
@@ -175,6 +171,7 @@ const Home = () => {
           userFollows={userGitData.following}
           userShortName={userGitData.login}
           userDescription={userGitData.bio}
+          link={userGitData.html_url}
         />
 
         <div className="detailsSect">
@@ -182,10 +179,12 @@ const Home = () => {
           <div className="repositories">
             {userRepos.map((repos, i) => (
               <UserDetailsSect
+                key={i}
                 cardTitle={repos.name}
                 cardDesc={repos.description}
                 forks={repos.forks}
                 stars={repos.stars}
+                repoLink={repos.clone_url}
               />
             ))}
           </div>
@@ -194,6 +193,7 @@ const Home = () => {
           <div className="followersSect">
             {userFollower.map((followers, i) => (
               <Network
+                key={i}
                 followerImg={followers.avatar_url}
                 followerName={followers.login}
               />
@@ -211,11 +211,6 @@ const Home = () => {
             ))}
           </div>
         </div>
-
-        {/* <Network followerName={"Wilfred Kiama"} followerImg={userImg} />
-        <Network followerName={"Wilfred Kiama"} followerImg={userImg} />
-        <Network followerName={"Wilfred Kiama"} followerImg={userImg} />
-        <Network followerName={"Wilfred Kiama"} followerImg={userImg} /> */}
       </div>
     </>
   );
