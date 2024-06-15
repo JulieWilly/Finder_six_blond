@@ -9,6 +9,9 @@ const HeaderSect = () => {
   const fetchData = getUserData((state) => state.fetchData);
 
   const handleUserSearch = () => {
+    if (inputValue == "") {
+      alert("Please enter name to search");
+    }
     userGitName(inputValue);
     fetchData(inputValue);
   };

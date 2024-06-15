@@ -113,19 +113,22 @@ const Home = () => {
   const [userRepos, setUserRepos] = useState([]);
   const [userFollower, setUserFollowers] = useState([]);
   const [userFollowing, setUserFollowing] = useState([]);
-  const [clickedUser, setClickedUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchDefaultValues(userName);
   }, [userName, fetchDefaultValues]);
 
   const getUserDetails = async () => {
+    setLoading(true);
     if (userName) {
       try {
         const userRepos = await fetch(
           `https://api.github.com/users/${userName}/repos`
         );
+        if (userRepos == null) {
+          console.log("djksjksdjks");
+        }
         const resultRepos = await userRepos.json();
         setUserRepos(resultRepos);
 
@@ -141,18 +144,18 @@ const Home = () => {
         const userFollowingResult = await userFollowing.json();
         setUserFollowing(userFollowingResult);
       } catch (e) {
-        console.log(e);
+        console.log("Failed to fetch user data", e);
       }
+    } else {
+      return <div>No user data available</div>;
     }
+    setLoading(false);
   };
 
   const displayUser = (userName) => {
     fetchDefaultValues(userName);
     getUserDetails(userName);
-    console.log("this is clickrd " + userName);
   };
-
-  console.log(userGitData);
 
   useEffect(() => {
     getUserDetails();
@@ -161,21 +164,30 @@ const Home = () => {
   return (
     <>
       <div className="homeSect">
-        {userGitData && (
-          <UserDetails
-            userImg={userGitData.avatar_url}
-            userName={userGitData.name}
-            userRepos={userGitData.public_repos}
-            userFollowers={userGitData.followers}
-            userFollows={userGitData.following}
-            userShortName={userGitData.login}
-            userDescription={userGitData.bio}
-            link={userGitData.html_url}
-          />
+        {isLoading ? (
+          <p className="loading">Loading profile...Please wait...</p>
+        ) : (
+          userGitData && (
+            <UserDetails
+              userImg={userGitData.avatar_url}
+              userName={userGitData.name}
+              userRepos={userGitData.public_repos}
+              userFollowers={userGitData.followers}
+              userFollows={userGitData.following}
+              userShortName={userGitData.login}
+              userDescription={userGitData.bio}
+              link={userGitData.html_url}
+            />
+          )
         )}
 
         <div className="detailsSect">
-          <Title title={"Repositories"} number={userRepos.length} />
+          {isLoading ? (
+            <p className="loading">Loading GitHub's repos...Please wait...</p>
+          ) : (
+            <Title title={"Repositories"} number={userRepos.length} />
+          )}
+
           <div className="repositories">
             {userRepos.map((repos, i) => (
               <UserDetailsSect
@@ -188,7 +200,12 @@ const Home = () => {
               />
             ))}
           </div>
-          <Title title={"Followers"} number={userFollower.length} />
+
+          {isLoading ? (
+            <p className="loading">Fetching followers...Please wait...</p>
+          ) : (
+            <Title title={"Followers"} number={userFollower.length} />
+          )}
 
           <div className="followersSect">
             {userFollower.map((followers, i) => (
@@ -201,7 +218,11 @@ const Home = () => {
             ))}
           </div>
 
-          <Title title={"Following"} number={userFollowing.length} />
+          {isLoading ? (
+            <p className="loading">Fetching followers...Please wait...</p>
+          ) : (
+            <Title title={"Following"} number={userFollowing.length} />
+          )}
 
           <div className="followersSect">
             {userFollowing.map((following, i) => (
