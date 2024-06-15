@@ -20,7 +20,10 @@ const HeaderSect = () => {
           <h1>GITHUB FINDER</h1>
         </div>
         <p>
-          By<span> Wilfred Muchire </span>
+          By{" "}
+          <a href="https://github.com/JulieWilly" target="_blank">
+            <span> Wilfred Muchire </span>
+          </a>
         </p>
 
         <div className="searchInput">

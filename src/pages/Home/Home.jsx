@@ -10,16 +10,17 @@ import { useEffect, useState } from "react";
 import getUserData from "../../store/gitInforStore";
 import { SlUserFollowing } from "react-icons/sl";
 
-const Network = ({ followerImg, followerName }) => {
+const Network = ({ followerImg, followerName, displayUser }) => {
   return (
     <>
       <div className="followers">
         <div className="followerImg">
-          <img src={followerImg} alt="" />
+          <img src={followerImg} alt="Git user profile" />
         </div>
         <h3>{followerName}</h3>
-        <button>
-          {<IoMdLink className="icons" />} View {followerName}{" "}
+
+        <button onClick={() => displayUser(userName)}>
+          {<IoMdLink className="icons" />} View {followerName}
         </button>
       </div>
     </>
@@ -38,7 +39,6 @@ const Title = ({ title, number }) => {
 const UserDetailsSect = ({ cardTitle, cardDesc, forks, stars, repoLink }) => {
   return (
     <>
-      {/* <Title title={"Repositories"} number={0} /> */}
       <div className="reposSect">
         <a href={repoLink} target="_blank">
           <div className="card">
@@ -60,16 +60,6 @@ const UserDetailsSect = ({ cardTitle, cardDesc, forks, stars, repoLink }) => {
           </div>
         </a>
       </div>
-
-      {/* <Title title={"Followers"} number={0} />
-        <div className="followersSect">
-          <Network followerName={"Wilfred Kiama"} followerImg={userImg} />
-        </div>
-        <Title title={"Follows"} number={0} />
-        <div className="followersSect">
-
-          <Network followerName={"Wilfred Kiama"} followerImg={userImg} />
-        </div> */}
     </>
   );
 };
@@ -123,56 +113,63 @@ const Home = () => {
   const [userRepos, setUserRepos] = useState([]);
   const [userFollower, setUserFollowers] = useState([]);
   const [userFollowing, setUserFollowing] = useState([]);
+  // const [clickedUser, setClickedUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log(userName);
 
   useEffect(() => {
     fetchDefaultValues(userName);
-  }, []);
+  }, [userName, fetchDefaultValues]);
+
+  const getUserDetails = async () => {
+    if (userName) {
+      try {
+        const userRepos = await fetch(
+          `https://api.github.com/users/${userName}/repos`
+        );
+        const resultRepos = await userRepos.json();
+        setUserRepos(resultRepos);
+
+        const userFollowers = await fetch(
+          `https://api.github.com/users/${userName}/followers`
+        );
+        const userFollowersResult = await userFollowers.json();
+        setUserFollowers(userFollowersResult);
+
+        const userFollowing = await fetch(
+          `https://api.github.com/users/${userName}/following`
+        );
+        const userFollowingResult = await userFollowing.json();
+        setUserFollowing(userFollowingResult);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  const displayUser = (userName) => {
+    console.log("this is " + userName);
+
+    fetchDefaultValues(userName);
+    // getUserDetails(userName);
+  };
 
   useEffect(() => {
-    const getUserDetails = async () => {
-      if (userName) {
-        try {
-          const userRepos = await fetch(
-            `https://api.github.com/users/${userName}/repos`
-          );
-          const resultRepos = await userRepos.json();
-          setUserRepos(resultRepos);
-          console.log(resultRepos);
-
-          const userFollowers = await fetch(
-            `https://api.github.com/users/${userName}/followers`
-          );
-          const userFollowersResult = await userFollowers.json();
-          setUserFollowers(userFollowersResult);
-
-          const userFollowing = await fetch(
-            `https://api.github.com/users/${userName}/following`
-          );
-          const userFollowingResult = await userFollowing.json();
-          setUserFollowing(userFollowingResult);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    };
     getUserDetails();
-  }, [userName]);
-
+  }, []);
   return (
     <>
       <div className="homeSect">
-        <UserDetails
-          userImg={userGitData.avatar_url}
-          userName={userGitData.name}
-          userRepos={userGitData.public_repos}
-          userFollowers={userGitData.followers}
-          userFollows={userGitData.following}
-          userShortName={userGitData.login}
-          userDescription={userGitData.bio}
-          link={userGitData.html_url}
-        />
+        {userGitData && (
+          <UserDetails
+            userImg={userGitData.avatar_url}
+            userName={userGitData.name}
+            userRepos={userGitData.public_repos}
+            userFollowers={userGitData.followers}
+            userFollows={userGitData.following}
+            userShortName={userGitData.login}
+            userDescription={userGitData.bio}
+            link={userGitData.html_url}
+          />
+        )}
 
         <div className="detailsSect">
           <Title title={"Repositories"} number={userRepos.length} />
@@ -196,6 +193,9 @@ const Home = () => {
                 key={i}
                 followerImg={followers.avatar_url}
                 followerName={followers.login}
+                displayUser={() => {
+                  displayUser;
+                }}
               />
             ))}
           </div>

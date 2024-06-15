@@ -18,7 +18,7 @@ const getUserData = create((set) => ({
       );
       const data = await fetchUserData.json();
 
-      set({ userGitData: data });
+      set({ userGitData: data, userGitName });
     } catch (e) {
       console.error("Failed to fetch user data", e);
     }
