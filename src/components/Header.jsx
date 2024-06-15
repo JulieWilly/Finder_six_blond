@@ -2,17 +2,17 @@ import React from "react";
 import { useState } from "react";
 import "./header.css";
 import getUserData from "../store/gitInforStore";
+
 const HeaderSect = () => {
   const [inputValue, setInputValues] = useState("");
-  const userName = getUserData((state) => state.userGitName);
-  const userData = getUserData((state) => state.fetchData);
+  const userGitName = getUserData((state) => state.setUserGitName);
+  const fetchData = getUserData((state) => state.fetchData);
 
   const handleUserSearch = () => {
-    userName(inputValue);
-    userData(inputValue);
+    userGitName(inputValue);
+    fetchData(inputValue);
   };
 
-  console.log(inputValuesd);
   return (
     <>
       <div className="headerSect">

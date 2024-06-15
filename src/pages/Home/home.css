@@ -26,7 +26,7 @@
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit:contain;
 }
 
 .user_section .userDesc {
@@ -133,6 +133,8 @@
   margin-top: 0.5rem;
   width: 5rem;
   height: 5rem;
+border-radius: 1rem;
+overflow: hidden;
 }
 .followerImg img {
   width: 100%;

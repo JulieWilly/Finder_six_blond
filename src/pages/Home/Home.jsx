@@ -112,63 +112,70 @@ const UserDetails = ({
   );
 };
 const Home = () => {
-  const { userGitName } = getUserData();
-  const [userData, setUserData] = useState([]);
+  const userName = getUserData((state) => state.userGitName);
+  const userGitData = getUserData((state) => state.userGitData);
+  const fetchDefaultValues = getUserData((state) => state.fetchData);
   const [userRepos, setUserRepos] = useState([]);
-  const [searchUser, setSearchUser] = useState("");
   const [userFollower, setUserFollowers] = useState([]);
   const [userFollowing, setUserFollowing] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const getUserDetails = async () => {
-    try {
-      const fetchUserData = await fetch(
-        "https://api.github.com/users/JulieWilly"
-      );
-
-      const userDataResult = await fetchUserData.json();
-      setUserData(userDataResult);
-
-      const userRepos = await fetch(
-        "https://api.github.com/users/JulieWilly/repos"
-      );
-      const resultRepos = await userRepos.json();
-      setUserRepos(resultRepos);
-
-      const userFollowers = await fetch(
-        "https://api.github.com/users/JulieWilly/followers"
-      );
-      const userFollowersResult = await userFollowers.json();
-      setUserFollowers(userFollowersResult);
-
-      const userFollowing = await fetch(
-        "https://api.github.com/users/JulieWilly/following"
-      );
-      const userFollowingResult = await userFollowing.json();
-      setUserFollowing(userFollowingResult);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  console.log(userName);
 
   useEffect(() => {
-    getUserDetails();
+    fetchDefaultValues(userName);
   }, []);
+
+  useEffect(() => {
+    const getUserDetails = async () => {
+      if (userName) {
+        try {
+          //  const fetchUserData = await fetch(
+          //    `https://api.github.com/users/${userName}`
+          //  );
+          //  const userDataResult = await fetchUserData.json();
+          //  setUserData(userDataResult);
+
+          const userRepos = await fetch(
+            `https://api.github.com/users/${userName}/repos`
+          );
+          const resultRepos = await userRepos.json();
+          setUserRepos(resultRepos);
+
+          const userFollowers = await fetch(
+            `https://api.github.com/users/${userName}/followers`
+          );
+          const userFollowersResult = await userFollowers.json();
+          setUserFollowers(userFollowersResult);
+
+          const userFollowing = await fetch(
+            `https://api.github.com/users/${userName}/following`
+          );
+          const userFollowingResult = await userFollowing.json();
+          setUserFollowing(userFollowingResult);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+    getUserDetails();
+  }, [userName]);
+
+  // if (!userGitData) {
+  //   return <div>No user data available</div>;
+  // }
 
   return (
     <>
       <div className="homeSect">
-        {
-          <UserDetails
-            userImg={userData.avatar_url}
-            userName={userData.name}
-            userRepos={userData.public_repos}
-            userFollowers={userData.followers}
-            userFollows={userData.following}
-            userShortName={userData.login}
-            userDescription={userData.bio}
-          />
-        }
+        <UserDetails
+          userImg={userGitData.avatar_url}
+          userName={userGitData.name}
+          userRepos={userGitData.public_repos}
+          userFollowers={userGitData.followers}
+          userFollows={userGitData.following}
+          userShortName={userGitData.login}
+          userDescription={userGitData.bio}
+        />
 
         <div className="detailsSect">
           <Title title={"Repositories"} number={userRepos.length} />
