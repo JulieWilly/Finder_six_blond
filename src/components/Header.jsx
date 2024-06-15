@@ -1,17 +1,18 @@
 import React from "react";
 import { useState } from "react";
 import "./header.css";
+import getUserData from "../store/gitInforStore";
 const HeaderSect = () => {
-  const [userSearch, setUserSearch] = useState();
+  const [inputValue, setInputValues] = useState("");
+  const userName = getUserData((state) => state.userGitName);
+  const userData = getUserData((state) => state.fetchData);
 
-  const userInput = (event) => {
-    setUserSearch(event.target.value);
-  };
-  const handleUserSearch = (event) => {
-    userInput();
+  const handleUserSearch = () => {
+    userName(inputValue);
+    userData(inputValue);
   };
 
-  console.log(userSearch);
+  console.log(inputValuesd);
   return (
     <>
       <div className="headerSect">
@@ -24,13 +25,12 @@ const HeaderSect = () => {
 
         <div className="searchInput">
           <input
-            value={userSearch}
-            onChange={userInput}
+            value={inputValue}
+            onChange={(event) => setInputValues(event.target.value)}
             type="text"
             placeholder="Enter a username"
           />
           <button type="button" onClick={handleUserSearch}>
-            {" "}
             Search
           </button>
         </div>

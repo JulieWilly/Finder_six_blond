@@ -127,7 +127,6 @@ const Home = () => {
       );
 
       const userDataResult = await fetchUserData.json();
-      console.log(userDataResult);
       setUserData(userDataResult);
 
       const userRepos = await fetch(
@@ -159,16 +158,6 @@ const Home = () => {
   return (
     <>
       <div className="homeSect">
-        {/* {userData.map((user) => (
-          <UserDetails
-            userImg={user.avatar_url}
-            userName={user.name}
-            userDescription={user.bio}
-            userFollowers={user.followers}
-            userFollows={user.following}
-            userRepos={user.repos}
-          />
-        ))} */}
         {
           <UserDetails
             userImg={userData.avatar_url}
@@ -184,7 +173,7 @@ const Home = () => {
         <div className="detailsSect">
           <Title title={"Repositories"} number={userRepos.length} />
           <div className="repositories">
-            {userRepos.map((repos) => (
+            {userRepos.map((repos, i) => (
               <UserDetailsSect
                 cardTitle={repos.name}
                 cardDesc={repos.description}
@@ -196,7 +185,7 @@ const Home = () => {
           <Title title={"Followers"} number={userFollower.length} />
 
           <div className="followersSect">
-            {userFollower.map((followers) => (
+            {userFollower.map((followers, i) => (
               <Network
                 followerImg={followers.avatar_url}
                 followerName={followers.login}
@@ -207,7 +196,7 @@ const Home = () => {
           <Title title={"Following"} number={userFollowing.length} />
 
           <div className="followersSect">
-            {userFollowing.map((following) => (
+            {userFollowing.map((following, i) => (
               <Network
                 followerImg={following.avatar_url}
                 followerName={following.login}

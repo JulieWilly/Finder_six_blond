@@ -27,11 +27,11 @@
 }
 
 .headerSect .searchInput input {
-  height: 2rem;
+  height: 2.5rem;
   padding-inline-start: 0.5rem;
   color: black;
 }
 .headerSect .searchInput button {
-  height: 2rem;
+  height: 2.5rem;
   padding: 0 1rem;
 }
