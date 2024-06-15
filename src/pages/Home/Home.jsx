@@ -19,7 +19,7 @@ const Network = ({ followerImg, followerName, displayUser }) => {
         </div>
         <h3>{followerName}</h3>
 
-        <button onClick={() => displayUser(userName)}>
+        <button onClick={() => displayUser(followerName)}>
           {<IoMdLink className="icons" />} View {followerName}
         </button>
       </div>
@@ -113,7 +113,7 @@ const Home = () => {
   const [userRepos, setUserRepos] = useState([]);
   const [userFollower, setUserFollowers] = useState([]);
   const [userFollowing, setUserFollowing] = useState([]);
-  // const [clickedUser, setClickedUser] = useState(null);
+  const [clickedUser, setClickedUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -145,16 +145,19 @@ const Home = () => {
       }
     }
   };
-  const displayUser = (userName) => {
-    console.log("this is " + userName);
 
+  const displayUser = (userName) => {
     fetchDefaultValues(userName);
-    // getUserDetails(userName);
+    getUserDetails(userName);
+    console.log("this is clickrd " + userName);
   };
+
+  console.log(userGitData);
 
   useEffect(() => {
     getUserDetails();
-  }, []);
+  }, [userName]);
+
   return (
     <>
       <div className="homeSect">
@@ -193,9 +196,7 @@ const Home = () => {
                 key={i}
                 followerImg={followers.avatar_url}
                 followerName={followers.login}
-                displayUser={() => {
-                  displayUser;
-                }}
+                displayUser={displayUser}
               />
             ))}
           </div>
@@ -207,6 +208,7 @@ const Home = () => {
               <Network
                 followerImg={following.avatar_url}
                 followerName={following.login}
+                displayUser={displayUser}
               />
             ))}
           </div>
