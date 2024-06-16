@@ -14,6 +14,7 @@ const HeaderSect = () => {
     }
     userGitName(inputValue);
     fetchData(inputValue);
+    setInputValues("");
   };
 
   return (

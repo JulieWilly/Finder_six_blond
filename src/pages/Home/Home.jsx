@@ -4,11 +4,10 @@ import "./home.css";
 import { IoMdLink } from "react-icons/io";
 import { FaCodeFork } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
-import userImg from "../../assets/mombasainit.jpg";
+import { IoLocation } from "react-icons/io5";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import getUserData from "../../store/gitInforStore";
-import { SlUserFollowing } from "react-icons/sl";
 
 const Network = ({ followerImg, followerName, displayUser }) => {
   return (
@@ -72,6 +71,7 @@ const UserDetails = ({
   userRepos,
   userFollowers,
   userFollows,
+  userLocation,
   link,
 }) => {
   return (
@@ -88,6 +88,10 @@ const UserDetails = ({
             <button>{<FaExternalLinkAlt />}View on github</button>
           </a>
           <div className="userNetwork">
+            <p>
+              {<IoLocation className="icons" />}
+              {userLocation}
+            </p>
             <p>
               {<RiGitRepositoryFill className="icons" />}
               {userRepos} repositories.
@@ -114,6 +118,13 @@ const Home = () => {
   const [userFollower, setUserFollowers] = useState([]);
   const [userFollowing, setUserFollowing] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  if (!userGitData) {
+    return (
+      <div>User name not Found. Please try again with the correct name.</div>
+    );
+  }
 
   useEffect(() => {
     fetchDefaultValues(userName);
@@ -124,30 +135,35 @@ const Home = () => {
     if (userName) {
       try {
         const userRepos = await fetch(
-          `https://api.github.com/users/${userName}/repos`
+          `https://api.github.com/users/${userName}/repos`,
         );
-        if (userRepos == null) {
-          console.log("djksjksdjks");
+
+        if (!userRepos.ok) {
+          setError("Repos not found");
         }
         const resultRepos = await userRepos.json();
         setUserRepos(resultRepos);
 
         const userFollowers = await fetch(
-          `https://api.github.com/users/${userName}/followers`
+          `https://api.github.com/users/${userName}/followers`,
         );
+        if (!userFollowers.ok) {
+          return <div>No followers were found</div>;
+        }
         const userFollowersResult = await userFollowers.json();
         setUserFollowers(userFollowersResult);
 
         const userFollowing = await fetch(
-          `https://api.github.com/users/${userName}/following`
+          `https://api.github.com/users/${userName}/following`,
         );
+        if (!userFollowing.ok) {
+          console.log("no following");
+        }
         const userFollowingResult = await userFollowing.json();
         setUserFollowing(userFollowingResult);
       } catch (e) {
         console.log("Failed to fetch user data", e);
       }
-    } else {
-      return <div>No user data available</div>;
     }
     setLoading(false);
   };
@@ -164,6 +180,7 @@ const Home = () => {
   return (
     <>
       <div className="homeSect">
+        {error && <div>{error}</div>}
         {isLoading ? (
           <p className="loading">Loading profile...Please wait...</p>
         ) : (
@@ -176,6 +193,7 @@ const Home = () => {
               userFollows={userGitData.following}
               userShortName={userGitData.login}
               userDescription={userGitData.bio}
+              userLocation={userGitData.location || "Location not included"}
               link={userGitData.html_url}
             />
           )
@@ -185,7 +203,14 @@ const Home = () => {
           {isLoading ? (
             <p className="loading">Loading GitHub's repos...Please wait...</p>
           ) : (
-            <Title title={"Repositories"} number={userRepos.length} />
+            <Title
+              title={"Repositories"}
+              number={
+                userRepos.length > 0
+                  ? userRepos.length
+                  : `Ooops! ${userGitData.name} has no repositories`
+              }
+            />
           )}
 
           <div className="repositories">
@@ -195,7 +220,7 @@ const Home = () => {
                 cardTitle={repos.name}
                 cardDesc={repos.description}
                 forks={repos.forks}
-                stars={repos.stars}
+                stars={repos.stargazers_count}
                 repoLink={repos.clone_url}
               />
             ))}
@@ -204,7 +229,14 @@ const Home = () => {
           {isLoading ? (
             <p className="loading">Fetching followers...Please wait...</p>
           ) : (
-            <Title title={"Followers"} number={userFollower.length} />
+            <Title
+              title={"Followers"}
+              number={
+                userFollower.length > 0
+                  ? userFollower.length
+                  : `Oooops! ${userGitData.name} is not followed by anyone yet.`
+              }
+            />
           )}
 
           <div className="followersSect">
@@ -221,7 +253,14 @@ const Home = () => {
           {isLoading ? (
             <p className="loading">Fetching followers...Please wait...</p>
           ) : (
-            <Title title={"Following"} number={userFollowing.length} />
+            <Title
+              title={"Following"}
+              number={
+                userFollowing.length > 0
+                  ? userFollowing.length
+                  : `Oooops! ${userGitData.name} is not following anyone yet.`
+              }
+            />
           )}
 
           <div className="followersSect">

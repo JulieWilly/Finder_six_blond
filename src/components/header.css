@@ -20,12 +20,19 @@
   color: var(--secondery-color);
   font-size: 1.2rem;
 }
+.headerSect {
+  border: 2px solid black;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+}
 
 .headerSect .title h1 {
   font-size: 2rem;
   color: var(--secondery-color);
 }
-.headerSect p a{
+.headerSect p a {
   text-decoration: none;
   color: var(--secondery-color);
 }

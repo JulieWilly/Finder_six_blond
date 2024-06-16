@@ -9,25 +9,29 @@
   flex-direction: row;
   margin: 0.5rem 1rem;
   gap: 1.5rem;
+  justify-content: space-between;
+  margin-top: 3.7rem;
 }
 
 .user_section {
   display: flex;
   flex-direction: column;
   width: 17rem;
+  position: fixed;
+  margin-top: 0.5rem;
 }
 .userImg {
   width: 100%;
   height: 17rem;
-border-radius: 1rem;
-    overflow: hidden;
-    /* border: 12px solid red; */
+  border-radius: 1rem;
+  overflow: hidden;
+  /* border: 12px solid red; */
 }
 .userImg img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit:cover;
+  object-fit: cover;
 }
 
 .user_section .userDesc {
@@ -38,8 +42,8 @@ border-radius: 1rem;
 .userDesc h1 {
   font-size: 1.7rem;
 }
-.user_section .userDesc a{
-    text-decoration: none;
+.user_section .userDesc a {
+  text-decoration: none;
 }
 
 .userDesc p {
@@ -70,32 +74,33 @@ border-radius: 1rem;
   gap: 0.5rem;
 }
 .icons {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 /*##############  DETAILS SECTIOIN ################33*/
 .detailsSect {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  margin-top: 0.5rem;
+  width: 73%;
 }
 
 .repositories {
   width: 100%;
   padding: 1rem 0;
   display: flex;
-  margin-right:  1rem;
+  margin-right: 1rem;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
 }
- a{
-    text-decoration:none;
-    color: black;
+a {
+  text-decoration: none;
+  color: black;
 }
 .card {
-  width: 27rem;
+  width: 25rem;
   border-radius: 0.5rem;
   background-color: var(--card-color);
   padding: 1rem;
@@ -140,7 +145,6 @@ border-radius: 1rem;
   margin-top: 0.5rem;
   width: 5rem;
   height: 5rem;
-
 }
 .followerImg img {
   width: 100%;
@@ -153,10 +157,9 @@ border-radius: 1rem;
   margin-top: 1rem;
 }
 .followers button {
-  height: 2rem;
   margin-top: 1rem;
   border-radius: 0.4rem;
-  padding: 0.5rem;
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -178,6 +181,7 @@ border-radius: 1rem;
 }
 
 .loading {
+  padding: 1.5rem;
   font-size: 2rem;
   color: var(--primary-color);
 }
