@@ -45,3 +45,13 @@
   height: 2.5rem;
   padding: 0 1rem;
 }
+
+@media  screen and (max-width:500px) {
+  .headerSect{
+    display: flex;
+    flex-direction: column;
+  }
+  .headerSect p{
+    padding: .5rem;
+  }
+}

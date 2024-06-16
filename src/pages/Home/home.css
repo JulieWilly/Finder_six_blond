@@ -7,6 +7,7 @@
 .homeSect {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   margin: 0.5rem 1rem;
   gap: 1.5rem;
   justify-content: space-between;
@@ -16,14 +17,14 @@
 .user_section {
   display: flex;
   flex-direction: column;
-  width: 17rem;
-  position: sticky;
+  width: 16rem;
+  position: fixed;
   margin-top: 0.5rem;
   height: auto;
 }
 .userImg {
   width: 100%;
-  height: 17rem;
+  height: 16rem;
   border-radius: 1rem;
   overflow: hidden;
   /* border: 12px solid red; */
@@ -85,10 +86,12 @@
   flex-direction: column;
   margin-top: 0.5rem;
   width: 73%;
+
 }
 
 .repositories {
   width: 100%;
+  
   padding: 1rem 0;
   display: flex;
   margin-right: 1rem;
@@ -191,4 +194,84 @@ a {
 .errors {
   margin-top: 10rem;
   border: 2px solid red;
+}
+
+
+@media screen and (max-width:500px) {
+.homeSect{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.detailsSect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.user_section{
+  position: relative;
+  margin-top: 5rem;
+}
+.repositories, .followerSect, .followersSect{
+  justify-content: center;
+}
+.card {
+  width: 21rem;
+}
+}
+
+@media screen and (max-width:900px) and (min-width:501px) {
+  .homeSect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .detailsSect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .user_section {
+    position: relative;
+    margin-top: 3rem;
+  }
+
+  .repositories,
+  .followerSect,
+  .followersSect {
+    justify-content: center;
+  }
+    .card {
+      width: 21rem;
+    }
+}
+@media screen and (min-width:901px) {
+  /* .homeSect {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+  } */
+
+.detailsSect{
+  width: 73%;
+}
+.card{
+  width: 24rem;
+}
+
+
+  /* .repositories,
+  .followerSect,
+  .followersSect {
+    justify-content: center;
+  }  */
 }
