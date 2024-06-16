@@ -113,16 +113,20 @@ const UserDetails = ({
 const Home = () => {
   const userName = getUserData((state) => state.userGitName);
   const userGitData = getUserData((state) => state.userGitData);
+  const error = getUserData((state) => state.error);
   const fetchDefaultValues = getUserData((state) => state.fetchData);
   const [userRepos, setUserRepos] = useState([]);
   const [userFollower, setUserFollowers] = useState([]);
   const [userFollowing, setUserFollowing] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
+  console.log(userGitData);
 
   if (!userGitData) {
     return (
-      <div>User name not Found. Please try again with the correct name.</div>
+      <div className="errors">
+        User name not found. Please try again with the correct name.
+      </div>
     );
   }
 
@@ -139,7 +143,7 @@ const Home = () => {
         );
 
         if (!userRepos.ok) {
-          setError("Repos not found");
+          console.log("User names has no repos.");
         }
         const resultRepos = await userRepos.json();
         setUserRepos(resultRepos);
@@ -148,7 +152,7 @@ const Home = () => {
           `https://api.github.com/users/${userName}/followers`,
         );
         if (!userFollowers.ok) {
-          return <div>No followers were found</div>;
+          console.log("User name has no followers");
         }
         const userFollowersResult = await userFollowers.json();
         setUserFollowers(userFollowersResult);
@@ -157,7 +161,7 @@ const Home = () => {
           `https://api.github.com/users/${userName}/following`,
         );
         if (!userFollowing.ok) {
-          console.log("no following");
+          console.log("User name follows no one.");
         }
         const userFollowingResult = await userFollowing.json();
         setUserFollowing(userFollowingResult);
@@ -180,7 +184,7 @@ const Home = () => {
   return (
     <>
       <div className="homeSect">
-        {error && <div>{error}</div>}
+        {error && <div> {error}</div>}
         {isLoading ? (
           <p className="loading">Loading profile...Please wait...</p>
         ) : (

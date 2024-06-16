@@ -3,7 +3,6 @@ import { create } from "zustand";
 const getUserData = create((set) => ({
   userGitName: "github",
   userGitData: {},
-
   // set the name and the data
   setUserGitName: (userGitName) => set({ userGitName }),
   setuserGitData: (userGitData) => set({ userGitData }),
@@ -17,17 +16,15 @@ const getUserData = create((set) => ({
       const fetchUserData = await fetch(
         `https://api.github.com/users/${userGitName}`,
       );
-
       if (!fetchUserData.ok) {
-        throw new Error("No useer has been found");
+        throw new Error("User not found.");
       }
       const data = await fetchUserData.json();
 
       set({ userGitData: data, userGitName });
     } catch (error) {
-      if (checkError) {
-        set({ error: error.message, userGitData: null, userGitName: null });
-      }
+      console.log("this is the error we found", error.message);
+      set({ error: error.message, userGitData: null, userGitName: null });
     }
   },
 }));
